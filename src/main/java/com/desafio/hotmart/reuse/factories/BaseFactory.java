@@ -1,6 +1,6 @@
 package com.desafio.hotmart.reuse.factories;
 
-import com.desafio.hotmart.reuse.BaseEntity;
+import com.desafio.hotmart.entity.BaseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
