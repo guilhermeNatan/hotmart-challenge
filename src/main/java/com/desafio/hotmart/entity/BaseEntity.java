@@ -1,10 +1,12 @@
-package com.desafio.hotmart.reuse;
+package com.desafio.hotmart.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 
 @MappedSuperclass
 @Getter
@@ -18,4 +20,6 @@ public class BaseEntity {
     @ColumnDefault(value = "0")
     private Long version;
 
+    @NotNull
+    private Calendar createAt;
 }

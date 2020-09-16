@@ -1,6 +1,5 @@
 package com.desafio.hotmart.entity;
 
-import com.desafio.hotmart.reuse.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
