@@ -1,10 +1,19 @@
 package com.desafio.hotmart;
 
+import com.desafio.hotmart.entity.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-@SpringBootTest
-class HotmartApplicationTests {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		ProductTest.class,
+		SalesmanTest.class,
+		SaleTest.class,
+		ProductCategory.class,
+		BuyerTest.class
+})
+public class HotmartApplicationTests {
 
 	@Test
 	void contextLoads() {
