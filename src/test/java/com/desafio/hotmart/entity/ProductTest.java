@@ -1,7 +1,5 @@
-package com.desafio.hotmart.entity.product;
+package com.desafio.hotmart.entity;
 
-import com.desafio.hotmart.entity.BaseTest;
-import com.desafio.hotmart.entity.Product;
 import com.desafio.hotmart.repository.ProductRepo;
 import com.desafio.hotmart.reuse.factories.ProductFactory;
 import lombok.Setter;
