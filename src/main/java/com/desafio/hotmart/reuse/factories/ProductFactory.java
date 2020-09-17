@@ -1,6 +1,7 @@
 package com.desafio.hotmart.reuse.factories;
 
 import com.desafio.hotmart.entity.Product;
+import com.desafio.hotmart.entity.ProductCategory;
 import com.desafio.hotmart.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,17 +14,24 @@ public class ProductFactory extends BaseFactory<Product> {
     @Autowired
     private ProductRepo productRepo;
 
+    @Autowired
+    private ProductCategoryFactory categoryFactory;
+
     @Override
     public Product create(boolean save) {
-        Product p = new Product();
-        p.setName("novoProduto");
-        p.setDescription("Teste");
-        p.setCreateAt(Calendar.getInstance());
+        return this.create(save, "Produto","Produto Generico");
+    }
 
+    public Product create(boolean save, String name, String description) {
+        ProductCategory category =  categoryFactory.create(save);
+        Product p = new Product();
+        p.setName(name);
+        p.setDescription(description);
+        p.setCreateAt(Calendar.getInstance());
+        category.addProduct(p);
         if(save) {
             return productRepo.save(p);
         }
-
         return p;
     }
 }
