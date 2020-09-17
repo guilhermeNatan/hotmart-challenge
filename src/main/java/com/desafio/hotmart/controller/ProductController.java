@@ -30,7 +30,7 @@ public class ProductController {
             product.setName(form.getName());
             product.setDescription(form.getDescription());
             productService.saveAndFlush(product);
-            return ResponseEntity.ok("Product create");
+            return ResponseEntity.ok("Success on create product");
         });
     }
 
