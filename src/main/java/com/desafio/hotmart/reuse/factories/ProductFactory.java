@@ -19,11 +19,11 @@ public class ProductFactory extends BaseFactory<Product> {
 
     @Override
     public Product create(boolean save) {
-        return this.create(save, "Produto","Produto Generico");
+        ProductCategory category =  categoryFactory.create(save);
+        return this.create(save, "Produto","Produto Generico", category);
     }
 
-    public Product create(boolean save, String name, String description) {
-        ProductCategory category =  categoryFactory.create(save);
+    public Product create(boolean save, String name, String description,  ProductCategory category ) {
         Product p = new Product();
         p.setName(name);
         p.setDescription(description);
