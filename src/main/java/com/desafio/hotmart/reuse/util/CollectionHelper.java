@@ -1,4 +1,4 @@
-package com.desafio.hotmart.reuse.factories.util;
+package com.desafio.hotmart.reuse.util;
 
 import java.util.ArrayList;
 import java.util.List;

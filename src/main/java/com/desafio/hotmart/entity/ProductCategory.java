@@ -1,16 +1,19 @@
 package com.desafio.hotmart.entity;
 
-import com.desafio.hotmart.reuse.factories.util.CollectionHelper;
+import com.desafio.hotmart.reuse.util.CollectionHelper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
+
 
 @Entity
 @NoArgsConstructor
