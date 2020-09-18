@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @MappedSuperclass
@@ -39,4 +41,15 @@ public class BaseEntity implements Serializable {
     private Calendar lastUpdate;
 
 
+    @Transient
+    public LocalDate getCreateAtInLocalDate()  {
+        return LocalDateTime.ofInstant(getCreateAt().toInstant(),
+                getCreateAt().getTimeZone().toZoneId()).toLocalDate();
+    }
+
+    @Transient
+    public LocalDate getLastUpdateInLocalDate ()  {
+        return LocalDateTime.ofInstant(getLastUpdate().toInstant(),
+                getLastUpdate().getTimeZone().toZoneId()).toLocalDate();
+    }
 }

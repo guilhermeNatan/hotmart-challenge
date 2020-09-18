@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 		SalesmanTest.class,
 		SaleTest.class,
 		ProductCategoryTest.class,
-		BuyerTest.class
+		BuyerTest.class,
+		ProductAvaliation.class
 })
 public class HotmartApplicationTests {
 

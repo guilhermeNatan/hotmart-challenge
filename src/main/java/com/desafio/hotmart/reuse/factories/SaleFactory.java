@@ -35,7 +35,7 @@ public class SaleFactory extends BaseFactory<Sale>{
         Sale sale = new Sale();
         sale.setBuyer(buyer);
         sale.setSalesman(salesman);
-        sale.setProduct(product);
+        product.addSale(sale);
         if(save) {
             return saleRepo.save(sale);
         }

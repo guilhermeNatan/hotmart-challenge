@@ -17,12 +17,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/getAllProducts")
+    @GetMapping("/list")
     public ResponseEntity getProducts() {
        return  apiOperation.transaction(() -> ResponseEntity.ok(productService.findAll()));
     }
 
-    @PostMapping("/createProduct")
+    @PostMapping("/insert")
     public ResponseEntity postProduct(@RequestBody ProductRequestForm form) {
 
         return  apiOperation.transaction(() -> {
@@ -34,7 +34,7 @@ public class ProductController {
         });
     }
 
-    @PutMapping("/updateProduct/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity updateProduct( @PathVariable("id") Long id,
                                          @RequestBody ProductRequestForm form) {
         return apiOperation.transaction(() -> {
@@ -45,7 +45,6 @@ public class ProductController {
             return ResponseEntity.ok(product);
         });
     }
-
 
 }
 
