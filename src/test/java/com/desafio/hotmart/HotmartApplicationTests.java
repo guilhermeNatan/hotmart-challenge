@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
 		ProductTest.class,
 		SalesmanTest.class,
 		SaleTest.class,
-		ProductCategory.class,
+		ProductCategoryTest.class,
 		BuyerTest.class
 })
 public class HotmartApplicationTests {
