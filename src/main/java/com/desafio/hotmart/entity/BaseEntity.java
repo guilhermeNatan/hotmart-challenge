@@ -1,5 +1,6 @@
 package com.desafio.hotmart.entity;
 
+import com.desafio.hotmart.reuse.util.DateUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @MappedSuperclass
@@ -43,13 +43,11 @@ public class BaseEntity implements Serializable {
 
     @Transient
     public LocalDate getCreateAtInLocalDate()  {
-        return LocalDateTime.ofInstant(getCreateAt().toInstant(),
-                getCreateAt().getTimeZone().toZoneId()).toLocalDate();
+       return DateUtil.convertCalendarToLocalDate(getCreateAt());
     }
 
     @Transient
     public LocalDate getLastUpdateInLocalDate ()  {
-        return LocalDateTime.ofInstant(getLastUpdate().toInstant(),
-                getLastUpdate().getTimeZone().toZoneId()).toLocalDate();
+        return DateUtil.convertCalendarToLocalDate(getLastUpdate());
     }
 }
