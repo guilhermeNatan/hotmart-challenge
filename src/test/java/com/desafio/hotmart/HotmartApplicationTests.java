@@ -12,7 +12,8 @@ import org.junit.runners.Suite;
 		SaleTest.class,
 		ProductCategoryTest.class,
 		BuyerTest.class,
-		ProductAvaliation.class
+		ProductAvaliation.class,
+		NewsTest.class
 })
 public class HotmartApplicationTests {
 
