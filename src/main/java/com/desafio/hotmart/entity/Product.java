@@ -1,6 +1,7 @@
 package com.desafio.hotmart.entity;
 
 import com.desafio.hotmart.reuse.util.CollectionHelper;
+import com.desafio.hotmart.reuse.util.DateUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Entity
-
 @NoArgsConstructor
 public class Product extends BaseEntity {
 
@@ -65,6 +65,12 @@ public class Product extends BaseEntity {
         return sales;
     }
 
+    /**
+     * X = average rating in last  12 months
+     * Y = sales/days since  the product exists
+     * Z = quantity of news from the product category on the current day
+     * @return  x + y + z
+     */
     @Transient
     public BigDecimal getScore (){
         return getAverageRatingsInLast12Months()
@@ -72,9 +78,16 @@ public class Product extends BaseEntity {
                 .add(getNewsByProductCategory());
     }
 
-    private BigDecimal getNewsByProductCategory() {
-        //TODO: Implments me when consume the news api
-        return BigDecimal.ZERO;
+    /**
+     * @return the total of  news by product category considering the date with today
+     */
+
+    public BigDecimal getNewsByProductCategory() {
+        long count = category.getNews().stream().filter(news -> {
+            LocalDate publishDate = DateUtil.convertCalendarToLocalDate(news.getPublishedAt());
+            return LocalDate.now().isEqual(publishDate);
+        }).count();
+        return BigDecimal.valueOf(count);
     }
 
 

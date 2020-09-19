@@ -1,5 +1,6 @@
 package com.desafio.hotmart.entity;
 
+import com.desafio.hotmart.controller.requestForms.ArticleForm;
 import com.desafio.hotmart.repository.ProductRepo;
 import com.desafio.hotmart.reuse.factories.*;
 import lombok.Setter;
@@ -33,6 +34,9 @@ public class ProductTest extends BaseTest {
     @Autowired
     private ProductAvaliationFactory productAvaliationFactory;
 
+    @Autowired
+    private NewsFactory newsFactory;
+
     @Test
     @Override
     public void createEntityTest() {
@@ -60,7 +64,7 @@ public class ProductTest extends BaseTest {
      */
     @Test
     public void getNumOfSalesByDayTest() {
-        final boolean PERSIST_DATA = true;
+        final boolean PERSIST_DATA = false;
         final int NUM_OF_SALES = 10;
         final int DAYS_OF_PRODUCT_CREATION = 5;
         Product product = productFactory.create(PERSIST_DATA);
@@ -91,13 +95,14 @@ public class ProductTest extends BaseTest {
         Product product = productFactory.create(PERSIST_DATA);
         int totalAvaliation = 0;
 
-        //This avaliation have be ignoreted becouse it is was created before 12 moths
+        //This avaliation must be ignoreted becouse it is was created before 12 moths
         Calendar dateBefore12Months = Calendar.getInstance();
         dateBefore12Months.add(Calendar.YEAR, -2);
-        ProductAvaliation avaliantionBeforere12Months = productAvaliationFactory.create(PERSIST_DATA, product, 2);
+        ProductAvaliation avaliantionBeforere12Months = productAvaliationFactory.create(PERSIST_DATA,
+                product, 2);
         avaliantionBeforere12Months.setCreateAt(dateBefore12Months);
 
-        // only this avaliations have be accepted for calculate the avarage ratings
+        // only this avaliations must be accepted for calculate the avarage ratings
         for(int i = 0 ; i< NUM_OF_AVALIATIONS; i++) {
             int avaliation = i%5 ;
             totalAvaliation = totalAvaliation + avaliation;
@@ -107,6 +112,75 @@ public class ProductTest extends BaseTest {
 
         Assert.assertEquals(BigDecimal.valueOf(totalAvaliation)
                 .divide(BigDecimal.valueOf(10)),  product.getAverageRatingsInLast12Months());
+
+    }
+
+    /**
+     * Objective: Check if Product:getNewsByProductCategory return the total of
+     * news by product category considering the date with today
+     */
+    @Test
+    public void getNewsByProductCategoryTest() {
+        final boolean PERSIST_DATA = false;
+        Product product = productFactory.create(PERSIST_DATA);
+        Calendar today =     Calendar.getInstance();
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+
+        ArticleForm articleForm = new ArticleForm();
+        articleForm.setTitle("Title");
+        articleForm.setDescription("Description");
+        articleForm.setPublishedAt(today);
+
+         newsFactory.createNewsFromArticle(PERSIST_DATA, articleForm, product.getCategory());
+
+        Assert.assertEquals(BigDecimal.ONE, product.getNewsByProductCategory());
+
+        // This news must be disregarded because it is from yesterday
+        articleForm.setPublishedAt(yesterday);
+        newsFactory.createNewsFromArticle(PERSIST_DATA, articleForm, product.getCategory());
+
+        Assert.assertEquals(BigDecimal.ONE, product.getNewsByProductCategory());
+
+    }
+
+    /**
+     * Objective: Validate the score calculate
+     * X = average rating in last  12 months: 3.5
+     * Y = sales/days since  the product exists:   10/5 = 2
+     * Z = quantity of news from the product category on the current day = 1
+     * Score expected: 3.5 + 2 + 1 = 6.5
+     */
+    @Test
+    public void getScoreTest(){
+        final boolean PERSIST_DATA = true;
+        final int NUM_OF_SALES = 10;
+        final int DAYS_OF_PRODUCT_CREATION = 5;
+        Product product = productFactory.create(PERSIST_DATA);
+        Salesman salesman = salesmanFactory.create(PERSIST_DATA);
+        Buyer buyer = buyerFactory.create(PERSIST_DATA);
+
+        Calendar productCreatAt = Calendar.getInstance();
+        productCreatAt.add(Calendar.DAY_OF_YEAR, -DAYS_OF_PRODUCT_CREATION);
+        product.setCreateAt(productCreatAt);
+
+        // Create 10 sales
+        for (int i = 0; i < NUM_OF_SALES; i++) {
+            saleFactory.create(PERSIST_DATA, product, salesman, buyer);
+        }
+
+        //Create 2 avaliations
+        productAvaliationFactory.create(PERSIST_DATA, product, 4);
+        productAvaliationFactory.create(PERSIST_DATA, product, 3);
+
+        // Create 1 news for product category
+        ArticleForm articleForm = new ArticleForm();
+        articleForm.setTitle("Title");
+        articleForm.setDescription("Description");
+        articleForm.setPublishedAt(Calendar.getInstance());
+        newsFactory.createNewsFromArticle(PERSIST_DATA, articleForm, product.getCategory());
+
+        Assert.assertEquals(BigDecimal.valueOf(6.5), product.getScore());
 
     }
 

@@ -31,6 +31,7 @@ public class NewsFactory extends BaseFactory<News> {
 
     public News createNewsFromArticle(boolean save, ArticleForm article, ProductCategory category) {
         News news = new News();
+        news.setTitle(article.getTitle());
         news.setAuthor(article.getAuthor());
         news.setPublishedAt(article.getPublishedAt());
         news.setDescription(article.getDescription());
