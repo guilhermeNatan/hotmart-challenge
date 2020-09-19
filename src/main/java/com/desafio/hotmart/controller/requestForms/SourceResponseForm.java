@@ -8,6 +8,4 @@ import lombok.Setter;
 public class SourceResponseForm {
     private String id;
     private String name;
-    private String category;
-
 }
