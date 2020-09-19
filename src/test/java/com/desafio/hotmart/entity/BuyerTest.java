@@ -33,7 +33,7 @@ public class BuyerTest   extends BaseTest{
             Buyer buyer = buyerFactory.create(SAVE) ;
             buyerRepo.delete(buyer);
         }catch (Exception e) {
-            fail("Fail on delet buyer"+ e.getMessage());
+            fail("Fail on delete buyer"+ e.getMessage());
         }
     }
 }
