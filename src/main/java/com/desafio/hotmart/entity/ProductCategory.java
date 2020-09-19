@@ -28,6 +28,11 @@ public class ProductCategory  extends BaseEntity {
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> products;
 
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<News> news;
+
+
+
     public void addProduct(Product p) {
         p.setCategory(this);
         getProducts().add(p);
@@ -36,6 +41,16 @@ public class ProductCategory  extends BaseEntity {
     public List<Product> getProducts() {
         products = CollectionHelper.instantiateListIfNecessary(products);
         return products;
+    }
+
+    public void addNews(News news) {
+        news.setCategory(this);
+        getNews().add(news);
+    }
+
+    public List<News> getNews() {
+        news = CollectionHelper.instantiateListIfNecessary(news);
+        return news;
     }
 
 }

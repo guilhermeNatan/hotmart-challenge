@@ -3,6 +3,7 @@ package com.desafio.hotmart.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -15,12 +16,10 @@ public class News extends BaseEntity {
 
     private String author;
     private String title ;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String url;
-    private String urlToImage;
     private Calendar publishedAt;
-    private String content;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductCategory category;
 }

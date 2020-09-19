@@ -5,4 +5,7 @@ import org.springframework.data.repository.cdi.Eager;
 
 @Eager
 public interface ProductCategoryRepo extends BaseRepo<ProductCategory>  {
+    ProductCategory findFirstByNameLike(String name);
+
+
 }

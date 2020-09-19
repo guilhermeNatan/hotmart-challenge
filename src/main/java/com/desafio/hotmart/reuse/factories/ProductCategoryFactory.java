@@ -12,7 +12,7 @@ public class ProductCategoryFactory  extends BaseFactory<ProductCategory> {
 
     @Override
     public ProductCategory create(boolean save) {
-        return this.create(save, "audiovisual");
+        return this.create(save, "general");
     }
 
 
