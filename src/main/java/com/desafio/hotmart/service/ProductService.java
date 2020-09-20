@@ -30,7 +30,7 @@ public class ProductService extends BaseService<Product> {
 
     public Page<Product> findProductByName(Optional<String> name, Optional<Integer> page, Optional<String> sortBy) {
         return productRepo.findByNameOrderByScoreDescNameAscCategoryAsc(name.orElse("_") , PageRequest.of(page.orElse(0),
-                PAGINACAO, Sort.Direction.DESC, sortBy.orElse("score"), "name", "category" ) );
+                PAGINATION, Sort.Direction.DESC, sortBy.orElse("score"), "name", "category" ) );
     }
 
     public void updateAllScores() {
@@ -39,6 +39,11 @@ public class ProductService extends BaseService<Product> {
 
     public void updateScoreByCategory(ProductCategory category) {
         productRepo.findAllByCategory(category).forEach(Product::updateScore);
+    }
+
+    public Page<Product> findAllProductsWithPagination(Integer page) {
+      return  findAllWithPaging(PageRequest.of(page,
+              PAGINATION, Sort.Direction.DESC, "name"));
     }
 
 

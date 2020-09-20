@@ -27,8 +27,7 @@ public class ProductController {
     @GetMapping("/list")
     public ResponseEntity getProducts(@RequestParam Optional<Integer> page) {
         return  apiOperation.transaction(() -> {
-            Page<Product> products = productService.findAllWithPaging(PageRequest.of(page.orElse(0),
-                    15, Sort.Direction.DESC, "name"));
+            Page<Product> products = productService.findAllProductsWithPagination(page.orElse(0));
            return ResponseEntity.ok(products);
         });
     }
