@@ -1,11 +1,17 @@
 package com.desafio.hotmart.controller;
 
+import com.desafio.hotmart.controller.requestForms.ProductForm;
 import com.desafio.hotmart.controller.requestForms.ProductRequestForm;
+import com.desafio.hotmart.controller.requestForms.SearchResponseForm;
 import com.desafio.hotmart.entity.Product;
 import com.desafio.hotmart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Calendar;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
@@ -46,5 +52,26 @@ public class ProductController {
         });
     }
 
+    @GetMapping("/find")
+    public ResponseEntity find(@RequestParam Optional<String> name,
+                              @RequestParam Optional<Integer> page,
+                              @RequestParam Optional<String> sortBy) {
+
+        Page<Product> pageProducts = productService.findProductByName(name, page, sortBy);
+        SearchResponseForm searchResponseForm = new SearchResponseForm();
+        searchResponseForm.setPage(pageProducts.getNumber() );
+        searchResponseForm.setDataAtual(Calendar.getInstance());
+        searchResponseForm.setTermoPesquisado(name.orElse(" "));
+        pageProducts.forEach(product ->  {
+            ProductForm productForm = new ProductForm();
+            productForm.setId(product.getId());
+            productForm.setScore(product.getScore());
+            productForm.setCreateAt(product.getCreateAt());
+            productForm.setName(product.getName());
+            productForm.setDescription(product.getDescription());
+            searchResponseForm.getConteudo().add(productForm);
+        });
+        return ResponseEntity.ok(searchResponseForm);
+    }
 }
 

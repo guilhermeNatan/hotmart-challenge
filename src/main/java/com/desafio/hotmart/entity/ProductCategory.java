@@ -1,6 +1,7 @@
 package com.desafio.hotmart.entity;
 
 import com.desafio.hotmart.reuse.util.CollectionHelper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,9 +26,11 @@ public class ProductCategory  extends BaseEntity {
     @Length(max = 100)
     private String name;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private List<Product> products;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<News> news;
 

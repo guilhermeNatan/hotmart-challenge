@@ -2,6 +2,7 @@ package com.desafio.hotmart.entity;
 
 import com.desafio.hotmart.reuse.util.CollectionHelper;
 import com.desafio.hotmart.reuse.util.DateUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,11 +36,14 @@ public class Product extends BaseEntity {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
+    @JsonIgnore
     private ProductCategory category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ProductAvaliation> avaliations;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Sale> sales;
 
@@ -96,8 +100,13 @@ public class Product extends BaseEntity {
      * @return total of sales / days since creating a product
      */
     public BigDecimal getNumOfSalesByDay() {
-       return BigDecimal.valueOf(getSales().size())
-               .divide(BigDecimal.valueOf(getNumDaysExistingProduct()));
+
+        Integer numDaysExistingProduct = getNumDaysExistingProduct();
+        if(numDaysExistingProduct == 0) {
+            return BigDecimal.ZERO;
+        }
+        return BigDecimal.valueOf(getSales().size())
+               .divide(BigDecimal.valueOf(numDaysExistingProduct));
     }
 
     private Integer getNumDaysExistingProduct () {
@@ -112,9 +121,13 @@ public class Product extends BaseEntity {
      */
     public BigDecimal getAverageRatingsInLast12Months() {
         long totalOfAvaliations = getLastProductAvaliationStream().count();
+        if(totalOfAvaliations == 0) {
+            return BigDecimal.ZERO;
+        }
         int sumOfAvaliations = getLastProductAvaliationStream()
                 .mapToInt((ProductAvaliation::getAvaliation))
                 .sum();
+
         return BigDecimal.valueOf(sumOfAvaliations).divide(BigDecimal.valueOf(totalOfAvaliations));
     }
 

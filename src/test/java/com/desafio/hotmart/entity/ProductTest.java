@@ -146,7 +146,7 @@ public class ProductTest extends BaseTest {
 
     /**
      * Objective: Validate the score calculate
-     * X = average rating in last  12 months: 3.5
+     * X = average rating in last  12 months: (4+3)/2 =  3.5
      * Y = sales/days since  the product exists:   10/5 = 2
      * Z = quantity of news from the product category on the current day = 1
      * Score expected: 3.5 + 2 + 1 = 6.5

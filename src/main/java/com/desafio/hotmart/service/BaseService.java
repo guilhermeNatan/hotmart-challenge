@@ -2,7 +2,6 @@ package com.desafio.hotmart.service;
 
 import com.desafio.hotmart.repository.BaseRepo;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -17,7 +16,7 @@ import java.util.Collection;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public abstract class BaseService<E>
 {
-  private static final int PAGINACAO = 30;
+  protected static final int PAGINACAO = 30;
 
   protected abstract JpaRepository<E, Long> getEntityRepository();
 
@@ -83,20 +82,5 @@ public abstract class BaseService<E>
     return this.getEntityRepository().saveAndFlush(entity);
   }
 
-  /**
-   * Flush caso seja necessário.
-   */
-  public void flush()
-  {
-    this.getEntityRepository().flush();
-  }
 
-  /**
-   * @param page pagina.
-   * @return paginação.
-   */
-  public Pageable getPaginacao(Integer page)
-  {
-    return PageRequest.of(page, PAGINACAO);
-  }
 }
