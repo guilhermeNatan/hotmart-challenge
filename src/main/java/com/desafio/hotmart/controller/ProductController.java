@@ -6,6 +6,8 @@ import com.desafio.hotmart.entity.Product;
 import com.desafio.hotmart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,12 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/list")
-    public ResponseEntity getProducts() {
-       return  apiOperation.transaction(() -> ResponseEntity.ok(productService.findAll()));
+    public ResponseEntity getProducts(@RequestParam Optional<Integer> page) {
+        return  apiOperation.transaction(() -> {
+            Page<Product> products = productService.findAllWithPaging(PageRequest.of(page.orElse(0),
+                    15, Sort.Direction.DESC, "name"));
+           return ResponseEntity.ok(products);
+        });
     }
 
     @PostMapping("/insert")
