@@ -11,5 +11,15 @@ public class DateUtil {
                 date.getTimeZone().toZoneId()).toLocalDate();
     }
 
+    public static LocalDate getAtualDate() {
+        Calendar today = Calendar.getInstance();
+        return LocalDateTime.ofInstant(today.toInstant(),
+                today.getTimeZone().toZoneId()).toLocalDate();
+    }
 
+
+    public static boolean isToday(Calendar date) {
+        LocalDate atualDate = getAtualDate();
+        return atualDate.isEqual(convertCalendarToLocalDate(date));
+    }
 }
