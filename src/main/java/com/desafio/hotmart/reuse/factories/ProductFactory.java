@@ -25,10 +25,10 @@ public class ProductFactory extends BaseFactory<Product> {
 
     public Product create(boolean save, String name, String description,  ProductCategory category ) {
         Product p = new Product();
+        category.addProduct(p);
         p.setName(name);
         p.setDescription(description);
         p.setCreateAt(Calendar.getInstance());
-        category.addProduct(p);
         if(save) {
             return productRepo.save(p);
         }

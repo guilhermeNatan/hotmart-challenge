@@ -1,12 +1,12 @@
 package com.desafio.hotmart.service;
 
-import com.desafio.hotmart.controller.ApiOperation;
 import com.desafio.hotmart.controller.requestForms.ArticleForm;
 import com.desafio.hotmart.controller.requestForms.TopHeadLinesResponseForm;
 import com.desafio.hotmart.entity.News;
 import com.desafio.hotmart.entity.ProductCategory;
 import com.desafio.hotmart.repository.NewsRepo;
 import com.desafio.hotmart.reuse.factories.NewsFactory;
+import com.desafio.hotmart.reuse.util.DateUtil;
 import com.desafio.hotmart.reuse.util.RequestStatus;
 import com.desafio.hotmart.schedulers.ScheduledTasks;
 import org.slf4j.Logger;
@@ -47,13 +47,13 @@ public class NewsService extends BaseService<News>{
     @Autowired
     private ProductCategoryService productCategoryService;
 
-
+    @Autowired
+    private ProductService productService;
 
     @Override
     protected JpaRepository<News, Long> getEntityRepository() {
         return newsRepo;
     }
-
 
 
     @Override
@@ -62,9 +62,9 @@ public class NewsService extends BaseService<News>{
     }
 
     public void insertNewsIfNotExist(ArticleForm article, ProductCategory category) {
-        if (!existingNews(article)) {
-                newsFactory.createNewsFromArticle(true, article, category);
-
+        if (DateUtil.isToday(article.getPublishedAt()) && !existingNews(article)) {
+               newsFactory.createNewsFromArticle(true, article, category);
+               productService.updateScoreByCategory(category);
         }
     }
 
@@ -72,12 +72,14 @@ public class NewsService extends BaseService<News>{
         return newsRepo.existsByTitleAndDescription(article.getTitle(), article.getDescription());
     }
 
-    public void consumingNewsAPIScheduler() {
-        logger.info("Consuming News API :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()) );
-        productCategoryService.findAll().stream().forEach(category -> {
-            TopHeadLinesResponseForm topHeadLines = restTemplate.getForObject(TOP_HEADLINES_URL + apiKey + "&category=" + category.getName(),
+    public void consumingNewsAPI() {
+        logger.info("Consuming News API :: Execution Time - {}",
+                dateTimeFormatter.format(LocalDateTime.now()) );
+        productCategoryService.findAll().forEach(category -> {
+            TopHeadLinesResponseForm topHeadLines = restTemplate.getForObject(
+                    TOP_HEADLINES_URL + apiKey + "&category=" + category.getName(),
                     TopHeadLinesResponseForm.class);
-            if(topHeadLines.getStatus().equals(RequestStatus.SUCCESS.getDescricao()) ) {
+            if(RequestStatus.SUCCESS.getDescricao().equals(topHeadLines.getStatus()) ) {
                 topHeadLines.getArticles().forEach(article ->  {
                     insertNewsIfNotExist(article, category);
                 });
@@ -89,7 +91,7 @@ public class NewsService extends BaseService<News>{
     public void removeOldNews() {
         logger.info("Removing old news- {}", dateTimeFormatter.format(LocalDateTime.now()) );
         Calendar today = Calendar.getInstance();
-        today.add(Calendar.DAY_OF_YEAR, -3);
+        today.add(Calendar.DAY_OF_YEAR, -2);
         newsRepo.removeAllByPublishedAtBefore(today);
     }
 }

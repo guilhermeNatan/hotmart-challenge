@@ -16,7 +16,7 @@ public class NewsController {
 
     @GetMapping("/getTopHeadlines")
     public ResponseEntity getProducts() {
-        newsService.consumingNewsAPIScheduler();
+        newsService.consumingNewsAPI();
         return  ResponseEntity.ok("Success on insert news ");
     }
 

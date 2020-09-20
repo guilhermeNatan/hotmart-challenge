@@ -152,7 +152,7 @@ public class ProductTest extends BaseTest {
      * Score expected: 3.5 + 2 + 1 = 6.5
      */
     @Test
-    public void getScoreTest(){
+    public void getCalculateScoreTest(){
         final boolean PERSIST_DATA = true;
         final int NUM_OF_SALES = 10;
         final int DAYS_OF_PRODUCT_CREATION = 5;
@@ -180,7 +180,7 @@ public class ProductTest extends BaseTest {
         articleForm.setPublishedAt(Calendar.getInstance());
         newsFactory.createNewsFromArticle(PERSIST_DATA, articleForm, product.getCategory());
 
-        Assert.assertEquals(BigDecimal.valueOf(6.5), product.getScore());
+        Assert.assertEquals(BigDecimal.valueOf(6.5), product.calculateScore());
 
     }
 

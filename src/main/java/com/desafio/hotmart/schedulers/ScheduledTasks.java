@@ -16,20 +16,21 @@ public class ScheduledTasks {
     private NewsService newsService;
 
     /**
-     * Consume the news api each 6 hours
+     * Consume news api each 6 hours
      */
     @Scheduled(cron = "0 0 0/6 1/1 * ?")
     public void consumingNewsAPIScheduler() {
-        newsService.consumingNewsAPIScheduler();
+        newsService.consumingNewsAPI();
     }
 
     /**
-     * Every Monday at 2am removes news that was published more than 3 days ago
+     * Every Monday at 2am removes news that was published more than 2 days ago
      */
     @Scheduled(cron = "0 0 2 ? * MON")
     public void removeOldNews(){
         newsService.removeOldNews();
     }
+
 
 
 }
