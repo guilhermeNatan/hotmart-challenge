@@ -1,6 +1,7 @@
 package com.desafio.hotmart.service;
 
 import com.desafio.hotmart.entity.Product;
+import com.desafio.hotmart.entity.ProductCategory;
 import com.desafio.hotmart.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,17 @@ public class ProductService extends BaseService<Product> {
     }
 
     public Page<Product> findProductByName(Optional<String> name, Optional<Integer> page, Optional<String> sortBy) {
-        return productRepo.findByNameOrderByNameAsc(name.orElse("_") , PageRequest.of(page.orElse(0),
-                PAGINACAO, Sort.Direction.ASC, sortBy.orElse("name") ) );
+        return productRepo.findByNameOrderByScoreDescNameAscCategoryAsc(name.orElse("_") , PageRequest.of(page.orElse(0),
+                PAGINACAO, Sort.Direction.DESC, sortBy.orElse("score"), "name", "category" ) );
     }
+
+    public void updateAllScores() {
+        productRepo.findAll().forEach(Product::updateScore);
+    }
+
+    public void updateScoreByCategory(ProductCategory category) {
+        productRepo.findAllByCategory(category).forEach(Product::updateScore);
+    }
+
+
 }

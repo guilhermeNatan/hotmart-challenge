@@ -16,7 +16,7 @@ import java.util.Collection;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public abstract class BaseService<E>
 {
-  protected static final int PAGINACAO = 30;
+  protected static final int PAGINACAO = 15;
 
   protected abstract JpaRepository<E, Long> getEntityRepository();
 

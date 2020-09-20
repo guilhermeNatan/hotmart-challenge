@@ -1,5 +1,6 @@
 package com.desafio.hotmart.controller.requestForms;
 
+import com.desafio.hotmart.entity.Product;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +18,5 @@ public class SearchResponseForm
   private int page;
   private String termoPesquisado;
   private Calendar dataAtual;
-  private List<ProductForm> conteudo = new ArrayList<>();
+  private List<Product> conteudo = new ArrayList<>();
 }

@@ -1,6 +1,5 @@
 package com.desafio.hotmart.controller;
 
-import com.desafio.hotmart.controller.requestForms.ProductForm;
 import com.desafio.hotmart.controller.requestForms.ProductRequestForm;
 import com.desafio.hotmart.controller.requestForms.SearchResponseForm;
 import com.desafio.hotmart.entity.Product;
@@ -62,16 +61,15 @@ public class ProductController {
         searchResponseForm.setPage(pageProducts.getNumber() );
         searchResponseForm.setDataAtual(Calendar.getInstance());
         searchResponseForm.setTermoPesquisado(name.orElse(" "));
-        pageProducts.forEach(product ->  {
-            ProductForm productForm = new ProductForm();
-            productForm.setId(product.getId());
-            productForm.setScore(product.getScore());
-            productForm.setCreateAt(product.getCreateAt());
-            productForm.setName(product.getName());
-            productForm.setDescription(product.getDescription());
-            searchResponseForm.getConteudo().add(productForm);
-        });
+        searchResponseForm.getConteudo().addAll(pageProducts.getContent());
         return ResponseEntity.ok(searchResponseForm);
+    }
+
+
+    @GetMapping("/updadteScore")
+    public ResponseEntity find() {
+        productService.updateAllScores();
+        return ResponseEntity.ok("ok");
     }
 }
 
