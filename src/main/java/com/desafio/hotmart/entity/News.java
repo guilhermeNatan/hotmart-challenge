@@ -14,10 +14,13 @@ import java.util.Calendar;
 @Entity
 public class News extends BaseEntity {
 
+    @Column(columnDefinition = "TEXT")
     private String author;
+    @Column(columnDefinition = "TEXT")
     private String title ;
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Column(columnDefinition = "TEXT")
     private String url;
     private Calendar publishedAt;
     @ManyToOne(fetch = FetchType.LAZY)
