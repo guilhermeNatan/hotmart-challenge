@@ -3,14 +3,14 @@ package com.desafio.hotmart.controller;
 import com.desafio.hotmart.controller.requestForms.ProductRequestForm;
 import com.desafio.hotmart.controller.requestForms.SearchResponseForm;
 import com.desafio.hotmart.entity.Product;
+import com.desafio.hotmart.reuse.factories.ProductFactory;
 import com.desafio.hotmart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.Optional;
 
@@ -24,6 +24,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductFactory productFactory;
+
     @GetMapping("/list")
     public ResponseEntity getProducts(@RequestParam Optional<Integer> page) {
         return  apiOperation.transaction(() -> {
@@ -33,15 +36,13 @@ public class ProductController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity postProduct(@RequestBody ProductRequestForm form) {
-
-        return  apiOperation.transaction(() -> {
-            Product product = new Product();
-            product.setName(form.getName());
-            product.setDescription(form.getDescription());
-            productService.saveAndFlush(product);
-            return ResponseEntity.ok("Success on create product");
-        });
+    public ResponseEntity postProduct(@Valid  @RequestBody ProductRequestForm form) {
+        try {
+            productFactory.createFromProductRequestForm(form);
+        } catch (Exception e) {
+            return  ResponseEntity.ok("Erro ao inserir produto" + e.getMessage());
+        }
+        return ResponseEntity.ok("Success on create product");
     }
 
     @PutMapping("/update/{id}")
@@ -71,10 +72,5 @@ public class ProductController {
     }
 
 
-    @GetMapping("/updadteScore")
-    public ResponseEntity find() {
-        productService.updateAllScores();
-        return ResponseEntity.ok("ok");
-    }
 }
 
