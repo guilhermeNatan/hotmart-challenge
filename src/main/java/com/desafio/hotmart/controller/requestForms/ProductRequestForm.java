@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 
 @Getter
@@ -15,6 +14,5 @@ public class ProductRequestForm {
     private String name;
     @NotBlank(message = "{error.product.description}" )
     private String description;
-    @NotNull(message = "{error.product.category}")
     private Long categoryId;
 }

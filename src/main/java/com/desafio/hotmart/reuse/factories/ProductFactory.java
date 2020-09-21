@@ -43,12 +43,24 @@ public class ProductFactory extends BaseFactory<Product> {
     }
 
 
-    public Product createFromProductRequestForm(ProductRequestForm form) throws Exception {
+    public Product createFromProductRequestForm(ProductRequestForm form) throws ProductException {
         Product product = new Product();
-        Optional<ProductCategory> category = categoryRepo.findById(form.getCategoryId());
+        if(form.getCategoryId() == null) {
+            throw new   ProductException("Informe o categoryId");
+        }
+        this.setProductFieldsFormProductRequestForm(product, form);
+        return productRepo.save(product);
+    }
+
+    public void setProductFieldsFormProductRequestForm(Product product, ProductRequestForm form)
+            throws ProductException {
+
+        if(form.getCategoryId()!=null) {
+            Optional<ProductCategory> category = categoryRepo.findById(form.getCategoryId());
+            product.setCategory(category.orElseThrow(() -> new ProductException("Nenhuma categoria registrada com o id " + form.getCategoryId())));
+
+        }
         product.setName(form.getName());
         product.setDescription(form.getDescription());
-        product.setCategory(category.orElseThrow(() ->  new ProductException("Nenhuma categoria registrada com o id " + form.getCategoryId())));
-        return productRepo.save(product);
     }
 }

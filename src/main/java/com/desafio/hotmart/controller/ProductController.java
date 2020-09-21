@@ -3,6 +3,7 @@ package com.desafio.hotmart.controller;
 import com.desafio.hotmart.controller.requestForms.ProductRequestForm;
 import com.desafio.hotmart.controller.requestForms.SearchResponseForm;
 import com.desafio.hotmart.entity.Product;
+import com.desafio.hotmart.exception.ProductException;
 import com.desafio.hotmart.reuse.factories.ProductFactory;
 import com.desafio.hotmart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,23 +39,24 @@ public class ProductController {
     @PostMapping("/insert")
     public ResponseEntity postProduct(@Valid  @RequestBody ProductRequestForm form) {
         try {
-            productFactory.createFromProductRequestForm(form);
+            Product product = productFactory.createFromProductRequestForm(form);
+            return ResponseEntity.ok(product);
         } catch (Exception e) {
-            return  ResponseEntity.ok("Erro ao inserir produto" + e.getMessage());
+            return  ResponseEntity.ok(e.getMessage());
         }
-        return ResponseEntity.ok("Success on create product");
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity updateProduct( @PathVariable("id") Long id,
                                          @RequestBody ProductRequestForm form) {
-        return apiOperation.transaction(() -> {
-            Product product = productService.findOne(id);
-            product.setDescription(form.getDescription());
-            product.setName(form.getName());
+        Product product = productService.findOne(id);
+        try {
+            productFactory.setProductFieldsFormProductRequestForm(product, form);
             productService.saveAndFlush(product);
-            return ResponseEntity.ok(product);
-        });
+        } catch (ProductException e) {
+            ResponseEntity.ok(e.getMessage());
+        }
+        return ResponseEntity.ok(product);
     }
 
     @GetMapping("/find")
@@ -69,6 +71,18 @@ public class ProductController {
         searchResponseForm.setTermoPesquisado(name.orElse(" "));
         searchResponseForm.getConteudo().addAll(pageProducts.getContent());
         return ResponseEntity.ok(searchResponseForm);
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id) {
+        try {
+            productService.delete(id);
+            return ResponseEntity.ok("Produto excluído com sucesso");
+
+        }catch (Exception e) {
+            return  ResponseEntity.ok("Falha ao excluir produto: " + e.getMessage());
+        }
     }
 
 
