@@ -22,10 +22,15 @@ Para facilitar a execução da apliação pelos avaliadores escolhi utilizar o H
 de dados relacional que pode ser embarcada junto com a  aplicação: 
 
 Para acessar os dados basta executar a aplicação e acessar a seguinte url http://localhost:8080/h2-console 
+
 Save Settings: Generic H2
+
 Setting Name: Generic H2
+
 JDBC URL : jdbc:h2:mem:desafiodb;DB_CLOSE_DELAY=-1
+
 username: sa
+
 password: sa
 
 
@@ -72,11 +77,27 @@ dentro do arquivo messages.propeties estão registrados todas a mensagens de exc
 
 
 ### Arquitetura usada
-Incluir imagem diagrama 
+![Alt text](/desafio.png "Diagrama de entidades ") 
 
- - como os dados são auditados  
-  - Factory explicar uso do save
-  - Falar sobre os testes 
+Toda entidade extends da classe Base entity, que possui os atribuitos id, version , createAt , lastUpdate, 
+sendo os dois  últimos utilizados para auditar os dados, futuramente pode ser incluido 
+um atributo createdBy vinculado a um usuário para registrar, a configuração de auditoria 
+foi feita na classe AuditingConfig 
+
+Dentro do pacote factory foram implementados fábricas para criar instancias de cada 
+entidade essas fábricas podem ser usadas tanto no contexto de teste de unidade 
+quando no contexto da aplicação. 
+
+Repositorios: estão dentro do pacote repository e implementam regras de acesso ao banco de dados 
+
+Serviços: estão dentro do pacote service e implementam regras de negócio como por exemplo validações que envolvem
+mais de uma entidade. 
+ 
+Controllers: estão no pacote controller e implementa os endpoints de acesso, a lógica de regras 
+de negócio devem ser delegadas para algum service ou repository. 
+
+
+
   
   
 ### Das tecnologias utilizadas no processo 
