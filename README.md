@@ -13,12 +13,12 @@ Autor: Guilherme Natan Barbosa Alecrim
 
 
 OBS:  para atender o requisito de no mínimo 100 linhas por tabela foi criado um DataLoader 
-para inserir os dados iniciais portanto na primeira vez que a aplicacao for executada pode ser
+para inserir os dados iniciais portanto na primeira vez que a aplicação for executada pode ser
 que demore alguns segundos. 
 
 
-### Acessando a  base de dados 
-Para facilitar a execução da apliação pelos avaliadores escolhi utilizar o H2 que é uma base
+## Acessando a  base de dados 
+Para facilitar a execução da aplicação pelos avaliadores escolhi utilizar o H2 que é uma base
 de dados relacional que pode ser embarcada junto com a  aplicação: 
 
 Para acessar os dados basta executar a aplicação e acessar a seguinte url http://localhost:8080/h2-console 
@@ -34,36 +34,36 @@ username: sa
 password: sa
 
 
-### Executando os testes de unidade 
+## Executando os testes de unidade 
 Para executar a bateria de testes execute o seguinte comando dentro da raiz do projeto
 ```mvn test```
 
 
-Foram criados testes de persistencia para todas as entidades a fim de validar os relacionamentos entre as entidades estavam 
+Foram criados testes de persistência para todas as entidades a fim de validar os relacionamentos entre as entidades estavam 
 corretos, mas também principalmente testes para validar o cálculo de score. 
-Todos os testes econtram-se dentro de diretorio ```test.java.com.desafio.hotmart.entity```
+Todos os testes encontram-se dentro de diretório ```test.java.com.desafio.hotmart.entity```
 
 
 
-### Métodos da API 
-A documentação da api pode ser acessada no seguinte link
+## Métodos da API 
+A documentação completa da api pode ser acessada no seguinte link
 https://documenter.getpostman.com/view/2425100/TVKD2cr4#intro 
 
 Foram criados os métodos  na classe ProductController
-* product/list 
-* product/insert 
-* product/update/{id}
-* product/find
-* product/delete/{id}
+* product/list : lista todos os produtos com paginação
+* product/insert : adiciona um novo produto
+* product/update/{id} : atualiza os dados de um determinado produto
+* product/find : busca um produto na base de dados pelo nome, a lista retonada contem os produtos ordenados pelo score, nome e categoria , o retorno também tem suporte a paginação
+* product/delete/{id}: remove um produto 
 
 
-### Estratégia de consumo da api de notícias e atualização dos scores
+## Estratégia de consumo da api de notícias e atualização dos scores
 Foi criado o ScheduledTasks:consumingNewsAPIScheduler que irá consumir a api de noticia 4 vezes ao dia
 também a fim de limpar a base de dados foi criado o job ScheduledTasks:removeOldNews que irá executar uma vez por semana 
 para excluir as noticias mais antigas.
  
  
-O método  NewsService:insertNewsIfNotExist garante que apenas notícias que ainda não exitem na base de dados
+O método  NewsService:insertNewsIfNotExist garante que apenas notícias que ainda não existem na base de dados
 afim de evitar duplicidade e também é verificado se a data de publicação da notícia corresponde ao dia corrente, pois 
 não faz sentido persistir noticias que não serão consideradas no cálculo do score . 
 
@@ -72,33 +72,41 @@ Sempre que noticia é inserida na base de dados é atualizado o score de todos o
 
 
  
-### Tratamento de exeção 
+## Tratamento de exceção 
 Dentro do pacote exception foi criado o ExceptionHandler  para tratar as validações de requisição 
 dentro do arquivo messages.propeties estão registrados todas a mensagens de exceção. 
 
 
 
-### Arquitetura usada
+## Arquitetura usada
 ![Alt text](/desafio.png "Diagrama de entidades ") 
 
 Toda entidade extends da classe Base entity, que possui os atribuitos id, version , createAt , lastUpdate, 
-sendo os dois  últimos utilizados para auditar os dados, futuramente pode ser incluido 
-um atributo createdBy vinculado a um usuário para registrar, a configuração de auditoria 
+sendo os dois  últimos utilizados para auditar os dados, futuramente pode ser incluindo 
+um atributo createdBy para relacionar o usuário que criou determinado registro. A configuração de auditoria 
 foi feita na classe AuditingConfig 
 
-Dentro do pacote factory foram implementados fábricas para criar instancias de cada 
+####Pacotes 
+
+**Reuse.Factory**: Dentro do pacote factory foram implementados fábricas para criar instâncias de cada 
 entidade essas fábricas podem ser usadas tanto no contexto de teste de unidade 
 quando no contexto da aplicação. 
 
-Repositorios: estão dentro do pacote repository e implementam regras de acesso ao banco de dados 
+**Reuse.Util:** Classes utilitárias 
 
-Serviços: estão dentro do pacote service e implementam regras de negócio como por exemplo validações que envolvem
-mais de uma entidade. 
+**Repository:** Contêm todos os repositórios estes que implementam as regras de acesso ao banco de dados 
+
+**Service:** Contem todos os services  e implementam regras de negócio como por exemplo validações que envolvem
+mais de uma entidade.  
  
-Controllers: estão no pacote controller e implementa os endpoints de acesso, a lógica de regras 
+**Controllers:** estão no pacote controller e implementa os endpoints de acesso, a lógica de regras 
 de negócio devem ser delegadas para algum service ou repository. 
 
+**Exception:** Contêm as exceções customizadas.   
 
+**Schedulers:** Contêm os jobs que serão executados de tempos em tempos como por exemplo o consumo da api de notícias. 
+
+**Configuration:** Configurções utilizadas pelo Spring boot 
 
   
   
@@ -106,7 +114,7 @@ de negócio devem ser delegadas para algum service ou repository.
 - Banco de dados: H2 
 - IDE:  Intellij IDEA
 - Teste da API rest: Postman 
-- Gerenciador de depencias: Maven 
+- Gerenciador de dependência: Maven 
 
 
  ### Melhorias que podem ser implementadas
