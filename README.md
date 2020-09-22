@@ -58,17 +58,19 @@ Foram criados os métodos  na classe ProductController
 
 
 ### Estratégia de consumo da api de notícias e atualização dos scores
-O método  NewsService:insertNewsIfNotExist garante que apenas notícias que ainda não exitem na base de dados
-afim de evitar duplicidade e também é verificado se a data de publicação da notícia corresponde ao dia corrente, pois 
-não faz sentido persistir noticias que não serão consideradas no calculo do score . 
-
-Sempre que noticia é inserida na base de dados é atualizado o score de todos os produtos que tem a mesma categoria da   notícia 
-
-
 Foi criado o ScheduledTasks:consumingNewsAPIScheduler que irá consumir a api de noticia 4 vezes ao dia
 também a fim de limpar a base de dados foi criado o job ScheduledTasks:removeOldNews que irá executar uma vez por semana 
 para excluir as noticias mais antigas.
  
+ 
+O método  NewsService:insertNewsIfNotExist garante que apenas notícias que ainda não exitem na base de dados
+afim de evitar duplicidade e também é verificado se a data de publicação da notícia corresponde ao dia corrente, pois 
+não faz sentido persistir noticias que não serão consideradas no cálculo do score . 
+
+Sempre que noticia é inserida na base de dados é atualizado o score de todos os produtos que tem a mesma categoria da   notícia 
+
+
+
  
 ### Tratamento de exeção 
 Dentro do pacote exception foi criado o ExceptionHandler  para tratar as validações de requisição 
