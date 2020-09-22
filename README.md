@@ -69,7 +69,7 @@ sendo os dois  últimos utilizados para auditar os dados, futuramente pode ser i
 um atributo createdBy para relacionar o usuário que criou determinado registro. A configuração de auditoria 
 foi feita na classe AuditingConfig 
 
-####Pacotes 
+#### Pacotes 
 
 **Reuse.Factory**: Dentro do pacote factory foram implementados fábricas para criar instâncias de cada 
 entidade essas fábricas podem ser usadas tanto no contexto de teste de unidade 
