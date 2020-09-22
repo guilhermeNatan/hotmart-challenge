@@ -71,6 +71,11 @@ foi feita na classe AuditingConfig
 
 #### Pacotes 
 
+**Entity:** Contêm todas as entidades utilizadas na modelagem do problema. Toda entidade 
+herda da classe BaseEntity esta que contêm atributos de auditoria, 
+além de id e versão de um registro, o atributo versao pode ser utilizado para fazer 
+tratramentos de acesso concorrente. 
+
 **Reuse.Factory**: Dentro do pacote factory foram implementados fábricas para criar instâncias de cada 
 entidade essas fábricas podem ser usadas tanto no contexto de teste de unidade 
 quando no contexto da aplicação. 
