@@ -43,7 +43,10 @@ Foram criados testes de persistência para todas as entidades a fim de validar o
 corretos, mas também principalmente testes para validar o cálculo de score. 
 Todos os testes encontram-se dentro de diretório ```test.java.com.desafio.hotmart.entity```
 
-
+Os testes de unidades utilizam as factories criadas dentro do pacote factory, 
+Toda factory implementa um método create que recebe um boolean indicando se uma entidade deve ou não ser persistida no banco
+esse boolean pode ser passado como false para testes que nao dependem de persistir alguma informação no banco de dados 
+dessa forma a execução dos testes pode ser otimizada. 
 
 ## Métodos da API 
 A documentação completa da api pode ser acessada no seguinte link
@@ -57,28 +60,7 @@ Foram criados os métodos  na classe ProductController
 * product/delete/{id}: remove um produto 
 
 
-## Estratégia de consumo da api de notícias e atualização dos scores
-Foi criado o ScheduledTasks:consumingNewsAPIScheduler que irá consumir a api de noticia 4 vezes ao dia
-também a fim de limpar a base de dados foi criado o job ScheduledTasks:removeOldNews que irá executar uma vez por semana 
-para excluir as noticias mais antigas.
- 
- 
-O método  NewsService:insertNewsIfNotExist garante que apenas notícias que ainda não existem na base de dados
-afim de evitar duplicidade e também é verificado se a data de publicação da notícia corresponde ao dia corrente, pois 
-não faz sentido persistir noticias que não serão consideradas no cálculo do score . 
-
-Sempre que noticia é inserida na base de dados é atualizado o score de todos os produtos que tem a mesma categoria da   notícia 
-
-
-
- 
-## Tratamento de exceção 
-Dentro do pacote exception foi criado o ExceptionHandler  para tratar as validações de requisição 
-dentro do arquivo messages.propeties estão registrados todas a mensagens de exceção. 
-
-
-
-## Arquitetura usada
+## Arquitetura
 ![Alt text](/desafio.png "Diagrama de entidades ") 
 
 Toda entidade extends da classe Base entity, que possui os atribuitos id, version , createAt , lastUpdate, 
@@ -108,14 +90,32 @@ de negócio devem ser delegadas para algum service ou repository.
 
 **Configuration:** Configurções utilizadas pelo Spring boot 
 
-  
-  
-### Das tecnologias utilizadas no processo 
-- Banco de dados: H2 
-- IDE:  Intellij IDEA
-- Teste da API rest: Postman 
-- Gerenciador de dependência: Maven 
 
+## Tratamento de exceção 
+Dentro do pacote exception foi criado o ExceptionHandler  para tratar as validações de requisição 
+dentro do arquivo messages.propeties estão registrados todas a mensagens de exceção. 
+
+
+## Estratégia de consumo da api de notícias e atualização dos scores
+Foi criado o ScheduledTasks:consumingNewsAPIScheduler que irá consumir a api de noticia 4 vezes ao dia
+também a fim de limpar a base de dados foi criado o job ScheduledTasks:removeOldNews que irá executar uma vez por semana 
+para excluir as noticias mais antigas.
+ 
+ 
+O método  NewsService:insertNewsIfNotExist garante que apenas notícias que ainda não existem na base de dados
+afim de evitar duplicidade e também é verificado se a data de publicação da notícia corresponde ao dia corrente, pois 
+não faz sentido persistir noticias que não serão consideradas no cálculo do score . 
+
+Sempre que noticia é inserida na base de dados é atualizado o score de todos os produtos que tem a mesma categoria da   notícia 
+
+ 
+  
+### Das tecnologias utilizadas
+- Banco de dados: H2  (https://www.h2database.com/html/main.html)
+- IDE:  Intellij IDEA (https://www.jetbrains.com/idea/promo/ultimate/?gclid=CjwKCAjwwab7BRBAEiwAapqpTDTCRbK2d8oCcHZuscQZAW9EayYBAXtT9n58ayiWwafcDp-9OvdxwhoCeD8QAvD_BwE)
+- Teste da API rest: Postman  (https://www.postman.com/)
+- Gerenciador de dependência: Maven 3.6  (https://maven.apache.org/)
+- Lombok 
 
  ### Melhorias que podem ser implementadas
  - A api de noticias trabalha com um conjunto específico de categorias pode ser utilizado 
