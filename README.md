@@ -109,6 +109,11 @@ não faz sentido persistir noticias que não serão consideradas no cálculo do 
 
 Sempre que noticia é inserida na base de dados é atualizado o score de todos os produtos que tem a mesma categoria da   notícia 
 
+Foi verificado que é possível fazer uma chamada para api de noticias passando a categoria como parametro dessa forma apenas 
+as noticias de uma determinada categoria são retornadas, de acordo com a documentaçao da api existem as seguintes categorias 
+business , entertainment, general ,health,science, sports,technology,  a cada execução do job são feitos 7 chamadas 
+na api de noticias, uma para cada categoria.  
+
  
   
 ### Das tecnologias utilizadas
