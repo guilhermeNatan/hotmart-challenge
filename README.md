@@ -6,7 +6,8 @@ Autor: Guilherme Natan Barbosa Alecrim
 ### Pré-requisitos 
  - maven 3.6 ou superior configurado 
  - jdk 1.8.0_191 
- 
+
+### Executando  
 1. Faça download do repositório 
  ```git clone https://github.com/guilhermeNatan/hotmart-challenge.git``` 
 1. Dentro da pasta hotmart-challenge execute o comando  ```java -jar executable.jar```
@@ -63,7 +64,7 @@ Foram criados os métodos  na classe ProductController
 ## Arquitetura
 ![Alt text](/desafio.png "Diagrama de entidades ") 
 
-Toda entidade extends da classe Base entity, que possui os atribuitos id, version , createAt , lastUpdate, 
+Toda entidade extends da classe BaseEntity, que possui os atribuitos id, version , createAt , lastUpdate, 
 sendo os dois  últimos utilizados para auditar os dados, futuramente pode ser incluindo 
 um atributo createdBy para relacionar o usuário que criou determinado registro. A configuração de auditoria 
 foi feita na classe AuditingConfig 
