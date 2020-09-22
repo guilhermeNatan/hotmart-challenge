@@ -94,7 +94,7 @@ de negócio devem ser delegadas para algum service ou repository.
 
 **Schedulers:** Contêm os jobs que serão executados de tempos em tempos como por exemplo o consumo da api de notícias. 
 
-**Configuration:** Configurções utilizadas pelo Spring boot 
+**Configuration:** Configurações do projeto. 
 
 
 ## Tratamento de exceção 
