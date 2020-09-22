@@ -122,7 +122,3 @@ na api de noticias, uma para cada categoria.
 - Teste da API rest: Postman  (https://www.postman.com/)
 - Gerenciador de dependência: Maven 3.6  (https://maven.apache.org/)
 - Lombok 
-
- ### Melhorias que podem ser implementadas
- - A api de noticias trabalha com um conjunto específico de categorias pode ser utilizado 
- uma Enum em vez de uma entidade  para representar as categorias
